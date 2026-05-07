@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rubik's Cube</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // OrbitControls for mouse interaction
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        camera.position.set(5, 5, 5);
+        controls.update();
+
+        // Colors for faces
+        const colors = {
+            white: 0xffffff,
+            red: 0xff0000,
+            blue: 0x0000ff,
+            orange: 0xffa500,
+            green: 0x00ff00,
+            yellow: 0xffff00,
+            black: 0x000000
+        };
+
+        // Create 27 cubies (3x3x3 grid)
+        const cubies = [];
+        const geometry = new THREE.BoxGeometry(0.95, 0.95, 0.95);
+
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                for (let z = -1; z <= 1; z++) {
+                    // Create materials for each face
+                    const materials = [
+                        new THREE.MeshBasicMaterial({ color: z === 1 ? colors.green : colors.black }), // Front
+                        new THREE.MeshBasicMaterial({ color: z === -1 ? colors.blue : colors.black }), // Back
+                        new THREE.MeshBasicMaterial({ color: y === 1 ? colors.white : colors.black }), // Top
+                        new THREE.MeshBasicMaterial({ color: y === -1 ? colors.yellow : colors.black }), // Bottom
+                        new THREE.MeshBasicMaterial({ color: x === 1 ? colors.red : colors.black }), // Right
+                        new THREE.MeshBasicMaterial({ color: x === -1 ? colors.orange : colors.black })  // Left
+                    ];
+
+                    const cubie = new THREE.Mesh(geometry, materials);
+                    cubie.position.set(x, y, z);
+                    scene.add(cubie);
+                    cubies.push({ mesh: cubie, x, y, z });
+                }
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

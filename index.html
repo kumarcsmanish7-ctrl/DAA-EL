@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cube Solver</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1000;
+        }
+        .sidebar h1 {
+            margin: 0 0 30px 0;
+            font-size: 24px;
+            text-align: center;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .speed-control {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .speed-control label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .speed-control input {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            outline: none;
+        }
+        .speed-control input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .speed-control input::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        #canvas-container {
+            flex: 1;
+            position: relative;
+        }
+        .status {
+            position: absolute;
+            bottom: 20px;
+            left: 270px;
+            background-color: rgba(0,0,0,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Cube Solver</h1>
+        <div class="controls">
+            <button id="colorPicker">🎨 Color Picker</button>
+            <button id="solver">🧩 Solver</button>
+            <button id="patterns">🔄 Patterns</button>
+            <button id="scramble">🔀 Scramble</button>
+            <button id="reset">🔄 Reset</button>
+            <button id="animateU">↻ Animate U</button>
+        </div>
+        <div class="speed-control">
+            <label for="speed">⚡ Speed</label>
+            <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
+        </div>
+    </div>
+    <div id="canvas-container"></div>
+    <div class="status" id="status">Ready</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="cube.js"></script>
+    <script src="renderer.js"></script>
+    <script src="controls.js"></script>
+</body>
+</html>
